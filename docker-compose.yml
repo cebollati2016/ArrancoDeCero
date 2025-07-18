@@ -1,0 +1,23 @@
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis
+   
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  app:
+    build: .
+    container_name: the-athena-ai-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - URL_REDIS=redis
+      - PORT_REDIS=6379
+      - PASSWORD_REDIS=root
+      - PORT=3000
+    depends_on:
+      - redis
+    restart: unless-stopped
